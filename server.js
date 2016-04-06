@@ -1,20 +1,32 @@
-var http = require("http");
+var express = require("express");	
+var app = express();
 var url = require('url');
-var server = http.createServer();
 
-server.on('request', function(request,response){
-	var method = request.method;
+var data = {};
+
+app.get('/set', function(request, response) {
 	var my_url = request.url;
 	var queryData = url.parse(my_url, true).query;
 	
-	response.writeHeader(200, {"Content-Type": "text/plain"});
-	
-	if (queryData.somekey) {
-		response.end('Data received');
-	} else {
-		response.end('somevalue');
+	for (var i in queryData) {
+		data[i] = queryData[i];
 	}
 	
-}).listen(4000);
+	console.log('set');
+	console.log(data);
+	
+	response.send();
+});
 
-console.log("Server Running on 4000");
+app.get('/get', function(request, response) {
+	var my_url = request.url;
+	var queryData = url.parse(my_url, true).query;
+	
+	console.log('get');
+		
+	response.send(data[queryData['key']]);
+});
+
+app.listen(4000, function () {
+  console.log('Example app listening on port 4000!');
+});
