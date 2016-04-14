@@ -1,6 +1,5 @@
 var express = require("express"),
-	fs = require('fs'),
-	url = require('url');	
+	fs = require('fs');	
 var app = express();
 
 var path = __dirname + '/public/data.txt';
@@ -8,6 +7,10 @@ var data = {};
 
 fs.readFile(path, 'utf-8', function(e, rdata){
 	data = JSON.parse(rdata);
+});
+
+app.get('/', function(request, response) {
+	response.send("Hello world");
 });
 
 app.get('/set', function(request, response) {
